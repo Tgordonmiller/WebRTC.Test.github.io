@@ -1,4 +1,10 @@
-const RTC = new RTCPeerConnection({'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]})
+const stunListResponse = await fetch("https://raw.githubusercontent.com/pradt2/always-online-stun/master/valid_hosts.txt")
+
+const stunListText = await stunListResponse.text()
+
+const formattedStunList = stunListText.split("\n").map(e => {return "stun:" + e})
+
+const RTC = new RTCPeerConnection({'iceServers': [{'urls': formattedStunList}]})
 
 window.STATE = () => {
     console.log(RTC.iceGatheringState, RTC.connectionState)
